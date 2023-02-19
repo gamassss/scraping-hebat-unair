@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/gamassss/scraping-hebat-unair/issues"
   },
-  "homepage": "https://github.com/gamassss/scraping-hebat-unair#readme"
+  "homepage": "https://github.com/gamassss/scraping-hebat-unair#readme",
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "node-schedule": "^2.1.1"
+  }
 }

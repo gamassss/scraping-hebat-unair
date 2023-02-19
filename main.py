@@ -2,10 +2,12 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
-import pandas as pd
 import json
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+with open('key.json', 'r') as f:
+    config = json.load(f)
 
 service = ChromeService(executable_path=ChromeDriverManager().install())
 
@@ -19,9 +21,9 @@ login_button.click()
 
 # cari field username dan password dan isi dengan nim dan password
 username_field = driver.find_element(By.NAME, "username")
-username_field.send_keys("YOUR_NIM")
+username_field.send_keys(config["NIM"])
 password_field = driver.find_element(By.NAME, "password")
-password_field.send_keys("YOUR_PASSWORD")
+password_field.send_keys(config["pass_hebat"])
 
 # submit form and log in
 login_form = driver.find_element(By.ID, "header-form-login")
@@ -46,6 +48,10 @@ tugas_pada_hari_terdekat = hari_terdekat.find_elements(
 # get jumlah tugas
 jumlah_tugas = str(len(tugas_pada_hari_terdekat))
 
+data = {
+    "nama_hari": nama_hari,
+    "tugas": []
+}
 tugas = []
 
 for items in tugas_pada_hari_terdekat:
@@ -61,12 +67,13 @@ for items in tugas_pada_hari_terdekat:
 
     # assign value
     object_tugas = {}
-    object_tugas["nama tugas"] = new_nama_tugas
+    object_tugas["nama_tugas"] = new_nama_tugas
     object_tugas["deadline"] = text_jam
 
     tugas.append(object_tugas)
 
-json_tugas = json.dumps(tugas)
+data["tugas"] = tugas
+json_tugas = json.dumps(data)
 print(json_tugas)
 # print("tugas pada hari " + nama_hari)
 
