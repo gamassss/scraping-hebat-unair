@@ -2,6 +2,10 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.common.by import By
+import pandas as pd
+import json
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 service = ChromeService(executable_path=ChromeDriverManager().install())
 
@@ -9,13 +13,65 @@ driver = webdriver.Chrome(service=service)
 
 driver.get("https://hebat.elearning.unair.ac.id/")
 
+# cari element login untuk membuka form login
 login_button = driver.find_element(By.CSS_SELECTOR, "a.login-open")
 login_button.click()
 
+# cari field username dan password dan isi dengan nim dan password
 username_field = driver.find_element(By.NAME, "username")
 username_field.send_keys("YOUR_NIM")
 password_field = driver.find_element(By.NAME, "password")
 password_field.send_keys("YOUR_PASSWORD")
 
+# submit form and log in
 login_form = driver.find_element(By.ID, "header-form-login")
 login_form.submit()
+
+# tunggu 10 detik sampai loading selesai
+wait = WebDriverWait(driver, 10)
+element = wait.until(EC.presence_of_element_located(
+    (By.CSS_SELECTOR, 'div.pl-0.list-group.list-group-flush')))
+
+# cari element nama hari terdekat
+nama_hari = driver.find_element(By.CSS_SELECTOR, "h5.h6.mt-3.mb-0").text
+
+# cari element tugas
+hari_terdekat = driver.find_element(
+    By.CSS_SELECTOR, "div.pl-0.list-group.list-group-flush")
+
+# child dari tugas terdekat
+tugas_pada_hari_terdekat = hari_terdekat.find_elements(
+    By.CSS_SELECTOR, "div.border-0")
+
+# get jumlah tugas
+jumlah_tugas = str(len(tugas_pada_hari_terdekat))
+
+tugas = []
+
+for items in tugas_pada_hari_terdekat:
+    # get jam
+    text_jam = items.find_element(By.XPATH, "./div/small").text
+
+    # get title tugas
+    nama_tugas = str(items.find_element(
+        By.XPATH, "./div/div[2]/a").get_attribute("title"))
+    words = nama_tugas.split()
+    new_words = words[:-2]
+    new_nama_tugas = " ".join(new_words)
+
+    # assign value
+    object_tugas = {}
+    object_tugas["nama tugas"] = new_nama_tugas
+    object_tugas["deadline"] = text_jam
+
+    tugas.append(object_tugas)
+
+json_tugas = json.dumps(tugas)
+print(json_tugas)
+# print("tugas pada hari " + nama_hari)
+
+# for items2 in jam_tugas:
+#     print(items2)
+
+# for title in title_tugas:
+#     print(title)

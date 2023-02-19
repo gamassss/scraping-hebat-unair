@@ -1,0 +1,20 @@
+{
+  "name": "hebat-scrape",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gamassss/scraping-hebat-unair.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gamassss/scraping-hebat-unair/issues"
+  },
+  "homepage": "https://github.com/gamassss/scraping-hebat-unair#readme"
+}
