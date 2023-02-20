@@ -1,11 +1,12 @@
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.common.by import By
 import json
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service as ChromeService
 
+# get json from key.json
 with open('key.json', 'r') as f:
     config = json.load(f)
 
@@ -52,6 +53,7 @@ data = {
     "nama_hari": nama_hari,
     "tugas": []
 }
+
 tugas = []
 
 for items in tugas_pada_hari_terdekat:

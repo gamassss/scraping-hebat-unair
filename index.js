@@ -6,9 +6,12 @@ const schedule = require("node-schedule");
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
 const runPythonScript = () => {
+
 	// spawn main.py
   const python = spawn("python", ["main.py"]);
+
   python.stdout.on("data", (data) => {
+
 		// fetch data
     const json_data = JSON.parse(data.toString());
     
@@ -21,8 +24,8 @@ const runPythonScript = () => {
         inline: false,
       },
     ];
-    const obj_field = {};
 
+		// append object to fields for embed message
     tugas.forEach((e) => {
       const obj_field = {};
 
@@ -33,9 +36,10 @@ const runPythonScript = () => {
       fields.push(obj_field);
     });
 
+		// send to specific channel
     const channel = client.channels.cache.get(channel_id);
 
-    // Embed messages
+    // Embed message
     const embedTugasMessage = {
       color: 0xffcd00,
       title: "Tugas Reminder",
@@ -50,6 +54,7 @@ const runPythonScript = () => {
       },
     };
 
+		// send embed message
     channel.send({
       embeds: [embedTugasMessage],
       files: [
@@ -73,9 +78,12 @@ const runPythonScript = () => {
 client.once(Events.ClientReady, (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`);
 
-	// you can customize the time below so it run in specific time you want
+	// you can customize the time below so it will run in specific time you want
+
+	// run everyday at 6PM (18:00)
 	schedule.scheduleJob("0 18 * * *", runPythonScript);
 
+	// run everyday at 9PM (21:00)
   schedule.scheduleJob("0 21 * * *", runPythonScript);
 });
 
