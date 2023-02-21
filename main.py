@@ -10,7 +10,16 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 with open('key.json', 'r') as f:
     config = json.load(f)
 
+# enable this code below if you face spawn ENONT issue use linux
+# options = Options()
+# options.add_argument("--no-sandbox");
+# options.add_argument("--headless");
+# options.add_argument("--disable-dev-shm-usage");
+
 service = ChromeService(executable_path=ChromeDriverManager().install())
+
+# enable this code below if you face spawn ENONT issue use linux
+# driver = webdriver.Chrome(service=service, options=options)
 
 driver = webdriver.Chrome(service=service)
 
@@ -77,10 +86,3 @@ for items in tugas_pada_hari_terdekat:
 data["tugas"] = tugas
 json_tugas = json.dumps(data)
 print(json_tugas)
-# print("tugas pada hari " + nama_hari)
-
-# for items2 in jam_tugas:
-#     print(items2)
-
-# for title in title_tugas:
-#     print(title)
